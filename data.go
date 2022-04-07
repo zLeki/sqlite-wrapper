@@ -16,6 +16,11 @@ func (feed *Feed) Delete(id int) error {
 
 	return err
 }
+func (feed *Feed) DeleteTable(db *sql.DB) error {
+	_, err := db.Exec("DROP TABLE IF EXISTS " + feed.Table)
+
+	return err
+}
 func (feed *Feed) Edit(from, to Item) error {
 	if from.ID == 0 {
 		_, err := feed.DB.Exec("UPDATE "+feed.Table+" SET content = ? WHERE content = ?", to.Content, from.Content)
