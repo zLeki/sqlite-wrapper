@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	data "liquidgen/sql"
+	data "github.com/zLeki/sqlite-wrapper"
 	"log"
 	"time"
 )
