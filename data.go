@@ -38,7 +38,7 @@ func (feed *Feed) Add(item Item) {
 		panic(err)
 	}
 }
-func NewFeed(db *sql.DB, table string) *Feed {
+func NewTable(db *sql.DB, table string) *Feed {
 	stmt ,_ := db.Prepare("CREATE TABLE IF NOT EXISTS "+table+" (id INTEGER PRIMARY KEY, content TEXT)")
 	_, err := stmt.Exec()
 	if err != nil {
