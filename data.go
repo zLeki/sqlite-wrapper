@@ -17,8 +17,16 @@ func (feed *Feed) Delete(id int) error {
 	return err
 }
 func (feed *Feed) Edit(from, to Item) error {
-	_, err := feed.DB.Exec("UPDATE "+feed.Table+" SET content = ? WHERE id = ?", to.Content, from.ID)
-	return err
+	if from.ID == 0 {
+		_, err := feed.DB.Exec("UPDATE "+feed.Table+" SET content = ? WHERE content = ?", to.Content, from.Content)
+		return err
+		// Can either use ID or Content to change.
+	} else {
+		_, err := feed.DB.Exec("UPDATE "+feed.Table+" SET content = ? WHERE id = ?", to.Content, from.ID)
+		return err
+
+	}
+
 }
 func ListTables(db *sql.DB) []string {
 	rows, err := db.Query("SELECT name FROM sqlite_master WHERE type='table'")
@@ -61,7 +69,7 @@ func (feed *Feed) Add(item Item) {
 		panic(err)
 	}
 }
-func NewTable(db *sql.DB, table string) *Feed {
+func Table(db *sql.DB, table string) *Feed {
 	stmt, _ := db.Prepare("CREATE TABLE IF NOT EXISTS " + table + " (id INTEGER PRIMARY KEY, content TEXT)")
 	_, err := stmt.Exec()
 	if err != nil {
